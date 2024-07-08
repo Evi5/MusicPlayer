@@ -1224,7 +1224,8 @@ class LrcHandler {
                     }
                     break;
                 case 'Shift':
-                    this.player.handlePlayAndPause()
+                    break;
+                    // this.player.handlePlayAndPause()
                 default:
                     break;
             }
