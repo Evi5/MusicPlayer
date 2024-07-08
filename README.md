@@ -81,20 +81,20 @@ python3 server.py
 # 运行截图
 ## 播放界面
 ### 单行lrc歌词
-![play](assets/play.png)
+![play](assets/play.jpg)
 ### 双行 逐字歌词
-![play](assets/play2.png)
+![play](assets/play2.jpg)
 ## lrc歌词新建/编辑界面
 ### 单语歌词 lrc
-![lrc](assets/lrc.png)
+![lrc](assets/lrc.jpg)
 ### 双语歌词 逐字
-![play2](assets/lrc2.png)
+![play2](assets/lrc2.jpg)
 ## 逐字歌词界面
 ### 逐字歌词 单行
-![elrc](assets/elrc.png)
+![elrc](assets/elrc.jpg)
 
 ### 逐字歌词 双行
-![elrc2](assets/elrc2.png)
+![elrc2](assets/elrc2.jpg)
 
 
 
