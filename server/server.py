@@ -237,7 +237,7 @@ def replace_start_timestamp(input_str, offset):
 		# 转换为毫秒数
 		current_ms = timestamp_to_milliseconds(f'{minutes}:{seconds}.{milliseconds}')
 		# 加上 offset 毫秒
-		new_ms = current_ms + offset
+		new_ms = current_ms - offset
 		# 转换回时间戳格式
 		new_timestamp = milliseconds_to_timestamp(new_ms)
 		# 替换原字符串中的时间戳
@@ -255,8 +255,8 @@ def replace_and_adjust_timestamps(input_str, offset):
 	for minutes, seconds, milliseconds in matches:
 		# 转换为毫秒数
 		current_ms = timestamp_to_milliseconds(f'{minutes}:{seconds}.{milliseconds}')
-		# 加上 offset 毫秒
-		new_ms = current_ms + offset
+		# 减去 offset 毫秒
+		new_ms = current_ms - offset
 		# 转换回时间戳格式
 		new_timestamp = milliseconds_to_timestamp(new_ms)
 		# 替换原字符串中的时间戳
