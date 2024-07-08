@@ -1,0 +1,349 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>音乐播放器</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:image/svg+xml,<svg class='icon' style='width: 1em;height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg' p-id='5001'><path d='M512 981.333333a466.261333 466.261333 0 0 1-331.861333-137.472A466.261333 466.261333 0 0 1 42.666667 512a466.261333 466.261333 0 0 1 137.472-331.861333A466.261333 466.261333 0 0 1 512 42.666667c14.165333 0 28.544 0.64 42.666667 1.92V512h-64A149.333333 149.333333 0 0 0 341.333333 661.333333a149.333333 149.333333 0 0 0 149.333334 149.333334 149.333333 149.333333 0 0 0 149.333333-149.333334V60.330667a472.618667 472.618667 0 0 1 244.522667 166.186666A465.066667 465.066667 0 0 1 981.333333 512a466.261333 466.261333 0 0 1-137.472 331.861333A466.261333 466.261333 0 0 1 512 981.333333z' p-id='5002'></path></svg>" />
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/reset.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/player.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/toast.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/splitter.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/lyrics.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/switchbutton.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/loading.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/tab.css" />
+    <style type="text/css">
+        /* 为ul设置一个计数器 */
+        .music__list_content {
+            counter-reset: item; /* 设置计数器的初始值为0 */
+            list-style: none; /* 移除默认的列表项符号 */
+            padding: 0; /* 移除默认的内边距 */
+
+            height: inherit;
+            display: block;
+            overflow-y: auto;
+            overflow-x: hidden;
+            white-space: nowrap;
+            scroll-behavior: smooth;
+        }
+
+        /* 使用counter-increment属性为每个li元素递增计数器 */
+        .music__list_content .list-item {
+            counter-increment: item; /* 每次遇到.list-item，计数器增加1 */
+            position: relative; /* 为绝对定位的序号做准备 */
+            padding-left: 3em; /* 为序号腾出空间 */
+            padding-bottom: 0.5em; /* 可选：添加列表项之间的间距 */
+            color: #ccc; /* 列表项文本的颜色 */
+
+            background-color: rgba(0, 0, 0, 1.0);;
+            position: sticky;
+            top: 0;
+        }
+
+        /* 使用:before伪元素在每个li元素前添加序号 */
+        .music__list_content .list-item:before {
+            content: counter(item) ". "; /* 显示计数器的值，后面跟一个点和空格 */
+            position: absolute; /* 绝对定位相对于其父元素.list-item */
+            left: 0; /* 将序号定位到左边 */
+            top: 0; /* 将序号定位到顶部 */
+            color: #FFF; /* 序号的颜色 */
+            font-size: 1em; /* 序号的字体大小 */
+            line-height: 1.5; /* 序号的行高 */
+        }
+
+
+
+
+
+        /*    编辑按钮    */
+        .icon-button {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: 1rem;
+        }
+
+        .icon-button svg {
+          transition: fill 0.1s, transform 0.1s;
+        }
+
+        .icon-button:hover svg {
+            transform: scale(1.2);
+        }
+
+        .icon-button:active svg {
+          animation: click-animation 0.4s ease-in-out forwards;
+        }
+
+        .icon-button svg.click-animation {
+          animation: click-animation 0.4s ease-in-out forwards;
+        }
+
+        @keyframes click-animation {
+          0%, 100% {
+            transform: scale(1);
+            fill: #FFFFFF;
+          }
+          50% {
+            transform: scale(1.5);
+            fill: #8e8f8f; /* Change to desired click color */
+          }
+        }
+
+
+
+
+        /*    弹出的编辑框    */
+        .md-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 84%;
+            min-width: 320px;
+            height: 80%;
+            z-index: 2000;
+            transform: translate(-50%, -50%) scale(0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s, transform 0.3s;
+        }
+
+        .md-modal.md-show {
+            visibility: visible;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .md-content {
+            color: #fff;
+            background: #303030;
+            border-radius: 3px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .md-content h3 {
+            margin: 0;
+            padding: 0.8em;
+            text-align: center;
+            font-size: 2.0em;
+            font-weight: 300;
+            opacity: 0.8;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .md-content textarea {
+            width: 100%;
+            height: calc(100% - 120px);
+            resize: none;
+            padding: 20px 1px;
+            color: white;
+            border-bottom: 1px solid transparent; /* 下边框透明 */
+            border-left: 0; /* 左边框隐藏 */
+            border-right: 0; /* 右边框隐藏 */
+            transition: border-top-color 0.3s, border-bottom-color 0.3s; /* 上下边框颜色变化的过渡效果 */
+            border-top: 1px solid transparent; /* 上边框透明 */
+            line-height: 1.2;
+            background: transparent;
+            white-space: nowrap; /*显示不换行*/
+        }
+
+
+        .md-content .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin: 10px;
+        }
+
+        .md-content button {
+            border: none;
+            padding: 0.6em 1.2em;
+            background: #212121;
+            color: #fff;
+            font-family: 'Lato', Calibri, Arial, sans-serif;
+            font-size: 1em;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .md-content button:hover {
+            background: #000000;
+        }
+
+        /* 定义textarea获得焦点时的样式 */
+        textarea:focus {
+            border-top-color: skyblue; /* 获得焦点时上边框颜色为skyblue */
+            border-bottom-color: skyblue; /* 获得焦点时下边框颜色为skyblue */
+            /* 左边框和右边框保持隐藏 */
+            outline: none; /* 隐藏默认的聚焦轮廓 */
+            box-shadow: none; /* 如果有阴影，也将其隐藏 */
+        }
+
+    </style>
+</head>
+<body>
+    <!-- 弹出层文本编辑框 -->
+    <div class="md-modal" id="eiditor">
+        <div class="md-content">
+            <h3>编辑 -  歌词</h3>
+            <textarea id="editor-area"></textarea>
+            <div class="button-container">
+                <button class="md-apply">应用</button>
+                <button class="md-close" onclick="toggleModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+    <!-- 加载图标 -->
+    <div id="loadingIcon">
+        <!-- <div class="spinner"></div> -->
+        <div class="music">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <!-- toast -->
+    <div id="toast-container"></div>
+    <!-- 整个播放器容器，使用Flex布局 -->
+    <div class="page-container">
+        <!-- 歌曲列表容器 -->
+        <div class="left-panel">
+            <div class="music-player__list">
+                <ul class="music__list_content">
+                </ul>
+            </div>
+        </div>
+        <!-- 添加一个拖动分隔条 -->
+        <div class="splitter" onmousedown="dragStart(event)"></div>
+        <!-- 右侧容器，分为上下两块 -->
+        <div class="right-panel">
+            <!-- 歌词容器 -->
+            <div class="lyrics-container">
+                <div style="position: absolute; right: 2%; top: 2%; display: flex; align-items: center;z-index: 9;">
+                    <label style="margin-right: 10px; color:#ccc;">偏移调整</label>
+                    <input type="checkbox" class="uiswitch" checked>
+                    <button class="icon-button" id="animated-button" onclick="toggleModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" viewBox="0 0 24 24" class="mx-2.5 icon-lg juice:text-token-text-secondary">
+                            <path d="M15.673 3.913a3.121 3.121 0 1 1 4.414 4.414l-5.937 5.937a5 5 0 0 1-2.828 1.415l-2.18.31a1 1 0 0 1-1.132-1.13l.311-2.18A5 5 0 0 1 9.736 9.85zm3 1.414a1.12 1.12 0 0 0-1.586 0l-5.937 5.937a3 3 0 0 0-.849 1.697l-.123.86.86-.122a3 3 0 0 0 1.698-.849l5.937-5.937a1.12 1.12 0 0 0 0-1.586M11 4A1 1 0 0 1 10 5c-.998 0-1.702.008-2.253.06-.54.052-.862.141-1.109.267a3 3 0 0 0-1.311 1.311c-.134.263-.226.611-.276 1.216C5.001 8.471 5 9.264 5 10.4v3.2c0 1.137 0 1.929.051 2.546.05.605.142.953.276 1.216a3 3 0 0 0 1.311 1.311c.263.134.611.226 1.216.276.617.05 1.41.051 2.546.051h3.2c1.137 0 1.929 0 2.546-.051.605-.05.953-.142 1.216-.276a3 3 0 0 0 1.311-1.311c.126-.247.215-.569.266-1.108.053-.552.06-1.256.06-2.255a1 1 0 1 1 2 .002c0 .978-.006 1.78-.069 2.442-.064.673-.192 1.27-.475 1.827a5 5 0 0 1-2.185 2.185c-.592.302-1.232.428-1.961.487C15.6 21 14.727 21 13.643 21h-3.286c-1.084 0-1.958 0-2.666-.058-.728-.06-1.369-.185-1.96-.487a5 5 0 0 1-2.186-2.185c-.302-.592-.428-1.233-.487-1.961C3 15.6 3 14.727 3 13.643v-3.286c0-1.084 0-1.958.058-2.666.06-.729.185-1.369.487-1.961A5 5 0 0 1 5.73 3.545c.556-.284 1.154-.411 1.827-.475C8.22 3.007 9.021 3 10 3A1 1 0 0 1 11 4"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <input type="radio" name="item" checked="checked" id="section1"/>
+                <input type="radio" name="item" id="section2"/>
+                <input type="radio" name="item" id="section3"/>
+                <!-- Navigation-->
+                <nav class="nav">
+                  <label class="nav__item" for="section1"></label>
+                  <label class="nav__item" for="section2"></label>
+                  <label class="nav__item" for="section3"></label>
+                </nav>
+
+                <section class="container">
+                    <!-- 这里将来用于显示歌词 -->
+                    <ul class="lrc-list">
+                    </ul>
+                </section>
+                <section class="lrc">
+                    <ul class="lrc-list">
+                    </ul>
+                </section>
+                <section class="elrc">
+                    <ul class="lrc-list">
+                    </ul>
+                </section>
+
+            </div>
+            <!-- 播放器主体 -->
+            <div class="music-player">
+                <audio class="music-player__audio" ></audio>
+                <div class="music-player__main">
+                    <!-- 模糊背景 -->
+                    <div class="music-player__blur"></div>
+                    <!-- 唱片 -->
+                    <div class="music-player__disc">
+                        <!-- 唱片图片 -->
+                        <div class="music-player__image">
+                            <img width="100%" src="" alt="">
+                        </div>
+                        <!-- 指针 -->
+                        <div class="music-player__pointer"><img width="100%" src="picture/cd_tou.png" alt=""></div>
+                    </div>
+                    <!-- 控件主体 -->
+                    <div class="music-player__controls">
+                        <!-- 歌曲信息 -->
+                        <div class="music__info">
+                            <h3 class="music__info--title">...</h3>
+                            <p class="music__info--singer">...</p>
+                        </div>
+                        <!-- 控件... -->
+                        <div class="player-control">
+                            <div class="player-control__content">
+                                <div class="player-control__btns">
+                                    <div class="player-control__btn player-control__btn--prev"><i class="iconfont icon-prev"></i></div>
+                                    <div class="player-control__btn player-control__btn--play"><i class="iconfont icon-play"></i></div>
+                                    <div class="player-control__btn player-control__btn--next"><i class="iconfont icon-next"></i></div>
+                                    <div class="player-control__btn player-control__btn--mode"><i class="iconfont icon-loop"></i></div>
+                                </div>
+                                <div class="player-control__volume">
+                                    <div class="control__volume--icon player-control__btn"><i class="iconfont icon-volume"></i></div>
+                                    <div class="control__volume--progress progress"></div>
+                                </div>
+                            </div>
+
+                            <!-- 歌曲播放进度 -->
+                            <div class="player-control__content">
+                                <div class="player__song--progress progress"></div>
+                                <div class="player__song--timeProgess nowTime">00:00</div>
+                                <div class="player__song--timeProgess totalTime">00:00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/utill.js"></script>
+    <!-- <script src="js/jquery.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/splitter.js"></script>
+    <script src="js/lyrics.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          document.querySelector('.nav').style.display = 'none';
+        });
+
+        // 选择特定的元素
+        var musicPlayerMain = document.querySelector('.music-player__main');
+
+        // 为该元素添加 oncontextmenu 事件处理器
+        musicPlayerMain.oncontextmenu = function(e) {
+          // 阻止默认的上下文菜单
+          e.preventDefault();
+        };
+    </script>
+</body>
+</html>

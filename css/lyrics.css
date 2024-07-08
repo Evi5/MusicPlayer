@@ -1,0 +1,164 @@
+.container {
+    height: 100%;
+    color: #666;
+    overflow: hidden;
+    text-align: center;
+    padding: 9% 0;
+}
+ 
+.container ul {
+    transition: 0.6s;
+    list-style: none;
+}
+ 
+.container li {
+    height: 30px;
+    line-height: 30px;
+    transition: 0.2s;
+}
+ 
+.container li.active {
+    color: #fffffff0;
+    /* font-size: 40px; */
+    transform: scale(1.2);
+    text-shadow: 0 0 10px rgb(255 255 255 / 87%); /* 静态/翻译歌词设置发光效果 */
+}
+
+.container li.active span {
+    position: relative;
+    color: black;
+    background: linear-gradient(to right, #666 0%, #666 50%, white 50%, white 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 100%;
+    text-shadow: none; /* 去掉动态歌词的发光效果 因为看不清 */
+}
+
+
+
+.elrc {
+    height: 100%;
+    color: #666;
+    overflow: scroll;
+    scroll-behavior: smooth;
+    text-align: center;
+    padding: 9% 0 35% 0;
+}
+ 
+.elrc ul {
+    transition: 0.6s;
+    list-style: none;
+}
+ 
+.elrc li {
+    height: 30px;
+    line-height: 30px;
+    transition: 0.2s;
+}
+
+.elrc li:hover {
+    background: #1d1d1d;
+}
+
+.elrc li:active {
+    background: white; /* 点击时的背景色 */
+}
+ 
+.elrc li.active {
+    color: #fffffff0;
+    /* font-size: 40px; */
+    transform: scale(1.2);
+    text-shadow: 0 0 10px rgb(255 255 255 / 87%); /* 静态/翻译歌词设置发光效果 */
+}
+
+.elrc li span{
+    border: 1px solid #666;
+    border-radius: 5px;
+    padding: 0 3px;
+    margin: 0 2px;
+}
+
+.elrc li b{
+    position: relative;
+    float: left;
+    left: 10px;
+    color: #7fd0f2;
+}
+
+.elrc li.active span {
+    position: relative;
+    color: black;
+    background: linear-gradient(to right, #666 0%, #666 50%, white 50%, white 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 100%;
+    text-shadow: none; /* 去掉动态歌词的发光效果 因为看不清 */
+}
+
+
+
+.lrc {
+    height: 100%;
+    color: #666;
+    overflow: scroll;
+    scroll-behavior: smooth;
+    text-align: center;
+    padding: 9% 0 35% 0;
+}
+ 
+.lrc ul {
+    transition: 0.6s;
+    list-style: none;
+}
+ 
+.lrc li {
+    display: flex;           /* 使用Flexbox布局 */
+    align-items: center;     /* 垂直居中对齐 */
+    justify-content: flex-start; /* 水平开始对齐 */
+    height: 30px;
+    line-height: 30px;
+    transition: 0.2s;
+}
+
+.lrc ul li:nth-child(odd) {
+  background-color: rgba(0, 0, 0, 0.5); /* 奇数行的颜色 */
+}
+
+.lrc ul li:nth-child(even) span {
+  background-color: transparent; /* 偶数行的颜色 */
+}
+
+.lrc ul li:nth-child(odd):hover,
+.lrc li:hover {
+    background-color: #7fd0f28c;
+    color: #adf27f;
+}
+
+.lrc li:active {
+    background: white; /* 点击时的背景色 */
+}
+
+.lrc li span {
+    flex: 1;                 /* 占满剩余空间 */
+    text-align: left;        /* 内容左对齐 */
+    padding: 0 3px;
+    margin: 0 2px;
+/*    border: 1px solid #666;
+    border-radius: 5px;
+*/
+}
+
+.lrc li b {
+    color: #666;
+    width: 9ch;
+}
+
+.lrc li.active span {
+    position: relative;
+    color: black;
+    background: linear-gradient(to right, #666 0%, #666 50%, white 50%, white 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 100%;
+    text-shadow: none; /* 去掉动态歌词的发光效果 因为看不清 */
+}

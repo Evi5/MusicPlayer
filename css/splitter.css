@@ -1,0 +1,51 @@
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        /* 页面容器使用两列布局 */
+        .page-container {
+            display: flex;
+            height: 100%; /* Add height to the container */
+        }
+
+        /* 左侧面板：歌曲列表 */
+        .left-panel {
+            width: 23%; /* 根据需要调整宽度 */
+            padding: 0px 24px;
+            background: rgba(0, 0, 0, 0%);
+            border-radius: 5px;
+            -webkit-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 右侧面板：歌词和播放器容器 */
+        .right-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Add height to the container */
+            overflow: hidden; /* Add overflow to hide any overflowing content */
+            position: relative;
+        }
+
+        /* 歌词容器，占较大空间 */
+        .lyrics-container {
+            flex: 1; /* 占满可用空间 */
+            border-radius: 5px;
+            overflow-y: hidden; /* 允许滚动 */
+            padding: 1%;
+        }
+
+        /* 拖动分隔条样式 */
+        .splitter {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            width: 5px; /* 可以根据需要调整宽度 */
+            background-color: #000; /* 分隔条的颜色 */
+            position: relative; /* 使z-index生效 */
+            /*z-index: 10; /* 确保分隔条在其他元素之上 */
+            cursor: col-resize; /* 设置鼠标悬停时的光标样式 */
+        }

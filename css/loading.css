@@ -1,0 +1,257 @@
+
+/* 居中的加载图标容器 */
+#loadingIcon {
+    display: none; /* 默认隐藏 */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 以中心点为基准，向上和向左移动自身宽度和高度的50% */
+    z-index: 1000; /* 确保图标显示在页面其他内容的上方 */
+    text-align: center;
+}
+
+/* 美化加载图标的样式 */
+.spinner {
+    border: 6px solid rgba(0, 0, 0, 0.1);
+    border-top: 6px solid #3498db; /* 使用渐变色 */
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 1s linear infinite;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
+}
+
+/* 添加旋转动画 */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 渐变色动画 */
+@keyframes gradient {
+    0% {
+        border-top-color: #3498db;
+    }
+    25% {
+        border-top-color: #e74c3c;
+    }
+    50% {
+        border-top-color: #f39c12;
+    }
+    75% {
+        border-top-color: #2ecc71;
+    }
+    100% {
+        border-top-color: #3498db;
+    }
+}
+
+/* 添加渐变色动画到加载图标 */
+.spinner {
+    animation: spin 1s linear infinite, gradient 4s ease infinite;
+}
+
+
+.music {
+    width: 190px;
+    height: 100px;
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+}
+
+.music span {
+    width: 6px;
+    border-radius: 18px;
+    margin-right: 6px;
+}
+
+.music span:nth-child(1) {
+    /* 时间递增，参差不齐的效果 */
+    animation: bar1 2s 0.2s infinite linear;
+}
+
+.music span:nth-child(2) {
+    animation: bar2 2s 0.4s infinite linear;
+}
+
+.music span:nth-child(3) {
+    animation: bar3 2s 0.6s infinite linear;
+}
+
+.music span:nth-child(4) {
+    animation: bar4 2s 0.8s infinite linear;
+}
+
+.music span:nth-child(5) {
+    animation: bar5 2s 1.0s infinite linear;
+}
+
+.music span:nth-child(6) {
+    animation: bar6 2s 1.2s infinite linear;
+}
+
+.music span:nth-child(7) {
+    animation: bar7 2s 1.4s infinite linear;
+}
+
+.music span:nth-child(8) {
+    animation: bar8 2s 1.6s infinite linear;
+}
+
+.music span:nth-child(9) {
+    animation: bar9 2s 1.8s infinite linear;
+}
+
+@keyframes bar1 {
+    0% {
+        background: #f677b0;
+        height: 10%;
+    }
+
+    50% {
+        background: #f677b0;
+        height: 100%;
+    }
+
+    100% {
+        background: #f677b0;
+        height: 10%;
+    }
+}
+
+@keyframes bar2 {
+    0% {
+        background: #df7ff2;
+        height: 10%;
+    }
+
+    50% {
+        background: #df7ff2;
+        height: 100%;
+    }
+
+    100% {
+        background: #df7ff2;
+        height: 10%;
+    }
+}
+
+@keyframes bar3 {
+    0% {
+        background: #8c7ff2;
+        height: 10%;
+    }
+
+    50% {
+        background: #8c7ff2;
+        height: 100%;
+    }
+
+    100% {
+        background: #8c7ff2;
+        height: 10%;
+    }
+}
+
+@keyframes bar4 {
+    0% {
+        background: #7fd0f2;
+        height: 10%;
+    }
+
+    50% {
+        background: #7fd0f2;
+        height: 100%;
+    }
+
+    100% {
+        background: #7fd0f2;
+        height: 10%;
+    }
+}
+
+@keyframes bar5 {
+    0% {
+        background: #7ff2d3;
+        height: 10%;
+    }
+
+    50% {
+        background: #7ff2d3;
+        height: 100%;
+    }
+
+    100% {
+        background: #7ff2d3;
+        height: 10%;
+    }
+}
+
+@keyframes bar6 {
+    0% {
+        background: #7ff2a0;
+        height: 10%;
+    }
+
+    50% {
+        background: #7ff2a0;
+        height: 100%;
+    }
+
+    100% {
+        background: #7ff2a0;
+        height: 10%;
+    }
+}
+
+@keyframes bar7 {
+    0% {
+        background: #adf27f;
+        height: 10%;
+    }
+
+    50% {
+        background: #adf27f;
+        height: 100%;
+    }
+
+    100% {
+        background: #adf27f;
+        height: 10%;
+    }
+}
+
+@keyframes bar8 {
+    0% {
+        background: #e7f27f;
+        height: 10%;
+    }
+
+    50% {
+        background: #e7f27f;
+        height: 100%;
+    }
+
+    100% {
+        background: #e7f27f;
+        height: 10%;
+    }
+}
+
+@keyframes bar9 {
+    0% {
+        background: #ecaa64;
+        height: 10%;
+    }
+
+    50% {
+        background: #ecaa64;
+        height: 100%;
+    }
+
+    100% {
+        background: #ecaa64;
+        height: 10%;
+    }
+}

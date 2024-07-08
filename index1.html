@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>音乐播放器</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/reset.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/player.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/toast.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/splitter.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/lyrics.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/switchbutton.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/loading.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/tab.css" />
+    <style type="text/css">
+
+        /* 为ul设置一个计数器 */
+        .music__list_content {
+            counter-reset: item; /* 设置计数器的初始值为0 */
+            list-style: none; /* 移除默认的列表项符号 */
+            padding: 0; /* 移除默认的内边距 */
+
+            height: inherit;
+            display: block;
+            overflow-y: auto;
+            overflow-x: hidden;
+            white-space: nowrap;
+            scroll-behavior: smooth;
+        }
+
+        /* 使用counter-increment属性为每个li元素递增计数器 */
+        .music__list_content .list-item {
+            counter-increment: item; /* 每次遇到.list-item，计数器增加1 */
+            position: relative; /* 为绝对定位的序号做准备 */
+            padding-left: 3em; /* 为序号腾出空间 */
+            padding-bottom: 0.5em; /* 可选：添加列表项之间的间距 */
+            color: #ccc; /* 列表项文本的颜色 */
+
+            background-color: rgba(0, 0, 0, 1.0);;
+            position: sticky;
+            top: 0;
+        }
+
+        /* 使用:before伪元素在每个li元素前添加序号 */
+        .music__list_content .list-item:before {
+            content: counter(item) ". "; /* 显示计数器的值，后面跟一个点和空格 */
+            position: absolute; /* 绝对定位相对于其父元素.list-item */
+            left: 0; /* 将序号定位到左边 */
+            top: 0; /* 将序号定位到顶部 */
+            color: #FFF; /* 序号的颜色 */
+            font-size: 1em; /* 序号的字体大小 */
+            line-height: 1.5; /* 序号的行高 */
+        }
+
+
+
+
+
+        /*    编辑按钮    */
+        .icon-button {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: 1rem;
+        }
+
+        .icon-button svg {
+          transition: fill 0.1s, transform 0.1s;
+        }
+
+        .icon-button:hover svg {
+            transform: scale(1.2);
+        }
+
+        .icon-button:active svg {
+          animation: click-animation 0.4s ease-in-out forwards;
+        }
+
+        .icon-button svg.click-animation {
+          animation: click-animation 0.4s ease-in-out forwards;
+        }
+
+        @keyframes click-animation {
+          0%, 100% {
+            transform: scale(1);
+            fill: #FFFFFF;
+          }
+          50% {
+            transform: scale(1.5);
+            fill: #8e8f8f; /* Change to desired click color */
+          }
+        }
+
+
+
+
+        /*    弹出的编辑框    */
+        .md-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 84%;
+            min-width: 320px;
+            height: 80%;
+            z-index: 2000;
+            transform: translate(-50%, -50%) scale(0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s, transform 0.3s;
+        }
+
+        .md-modal.md-show {
+            visibility: visible;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .md-content {
+            color: #fff;
+            background: #303030;
+            border-radius: 3px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .md-content h3 {
+            margin: 0;
+            padding: 0.8em;
+            text-align: center;
+            font-size: 2.0em;
+            font-weight: 300;
+            opacity: 0.8;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .md-content textarea {
+            width: 100%;
+            height: calc(100% - 120px);
+            resize: none;
+            padding: 20px 1px;
+            color: white;
+            border-bottom: 1px solid transparent; /* 下边框透明 */
+            border-left: 0; /* 左边框隐藏 */
+            border-right: 0; /* 右边框隐藏 */
+            transition: border-top-color 0.3s, border-bottom-color 0.3s; /* 上下边框颜色变化的过渡效果 */
+            border-top: 1px solid transparent; /* 上边框透明 */
+            line-height: 1.2;
+            background: transparent;
+            white-space: nowrap; /*显示不换行*/
+        }
+
+
+        .md-content .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin: 10px;
+        }
+
+        .md-content button {
+            border: none;
+            padding: 0.6em 1.2em;
+            background: #212121;
+            color: #fff;
+            font-family: 'Lato', Calibri, Arial, sans-serif;
+            font-size: 1em;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .md-content button:hover {
+            background: #000000;
+        }
+
+        /* 定义textarea获得焦点时的样式 */
+        textarea:focus {
+            border-top-color: skyblue; /* 获得焦点时上边框颜色为skyblue */
+            border-bottom-color: skyblue; /* 获得焦点时下边框颜色为skyblue */
+            /* 左边框和右边框保持隐藏 */
+            outline: none; /* 隐藏默认的聚焦轮廓 */
+            box-shadow: none; /* 如果有阴影，也将其隐藏 */
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="left-panel">
+            <div class="music-player__list">
+                <ul class="music__list_content">
+                </ul>
+            </div>
+        </div>
+        <div class="splitter"></div>
+        <div class="right-panel">
+            <div class="lyrics-container">
+                <input type="radio" name="item" checked="checked" id="section1"/>
+                <input type="radio" name="item" id="section2"/>
+                <input type="radio" name="item" id="section3"/>
+                <input type="radio" name="item" id="section4"/>
+                <!-- Navigation-->
+                <nav class="nav">
+                  <label class="nav__item" for="section1"></label>
+                  <label class="nav__item" for="section2"></label>
+                  <label class="nav__item" for="section3"></label>
+                  <label class="nav__item" for="section4"></label>
+                </nav>
+
+                <section>
+                  <h1>One Page</h1>
+                </section>
+                <section>
+                  <h1>Pure CSS</h1>
+                </section>
+                <section>
+                  <h1>Full Screen</h1>
+                </section>
+                <section>
+                  <h1>@Ver_Qn</h1>
+                </section>
+            </div>
+        </div>
+    </div>
+
+<div class="cover"></div>
+</body>
+</html>
